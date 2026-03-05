@@ -55,7 +55,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
   .withClosedLoopController(IntakeArmConstants.kP, IntakeArmConstants.kI, IntakeArmConstants.kD, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
-  .withSimClosedLoopController(1, 0, 0, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
+  .withSimClosedLoopController(10, 0, 0, DegreesPerSecond.of(300), DegreesPerSecondPerSecond.of(300))
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(IntakeArmConstants.kS, IntakeArmConstants.kG , IntakeArmConstants.kV))
   .withSimFeedforward(new ArmFeedforward(0, 0, 0))
