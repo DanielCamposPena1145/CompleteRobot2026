@@ -54,7 +54,7 @@ public class IntakeArmSubsystem extends SubsystemBase {
     smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
   // Feedback Constants (PID Constants)
-  .withClosedLoopController(IntakeArmConstants.kP, IntakeArmConstants.kI, IntakeArmConstants.kD, DegreesPerSecond.of(90), DegreesPerSecondPerSecond.of(45))
+  .withClosedLoopController(IntakeArmConstants.kP, IntakeArmConstants.kI, IntakeArmConstants.kD, IntakeArmConstants.maxVelocityDegPerSec, IntakeArmConstants.maxAccelerationDegPerSecPerSec)
   // .withSimClosedLoopController(0, 0, 0, DegreesPerSecond.of(300), DegreesPerSecondPerSecond.of(300))
   // Feedforward Constants
   .withFeedforward(new ArmFeedforward(IntakeArmConstants.kS, IntakeArmConstants.kG , IntakeArmConstants.kV))
@@ -64,27 +64,27 @@ public class IntakeArmSubsystem extends SubsystemBase {
   // Gearing from the motor rotor to final shaft.
   // In this example GearBox.fromReductionStages(3,4) is the same as GearBox.fromStages("3:1","4:1") which corresponds to the gearbox attached to your motor.
   // You could also use .withGearing(12) which does the same thing.
-  .withGearing(12)
+  .withGearing(IntakeArmConstants.gearRatio)
   // Motor properties to prevent over currenting.
-  .withMotorInverted(false)
+  .withMotorInverted(IntakeArmConstants.motorInverted)
   .withIdleMode(MotorMode.BRAKE)
   .withStatorCurrentLimit(IntakeArmConstants.statorCurrentLimit)
   .withClosedLoopRampRate(Seconds.of(0.25));
 
-  spark = new SparkFlex(4, MotorType.kBrushless);
+  spark = new SparkFlex(IntakeArmConstants.canID, MotorType.kBrushless);
 
-  sparkSmartMotorController = new SparkWrapper(spark, DCMotor.getNEO(1), smcConfig);
+  sparkSmartMotorController = new SparkWrapper(spark, IntakeArmConstants.dcMotor, smcConfig);
 
   armCfg = new ArmConfig(sparkSmartMotorController)
   // Soft limit is applied to the SmartMotorControllers PID
-  .withSoftLimits(Degrees.of(-20), Degrees.of(60))
+  .withSoftLimits(IntakeArmConstants.softLimitLower, IntakeArmConstants.softLimitUpper)
   // Hard limit is applied to the simulation.
-  .withHardLimit(Degrees.of(-30), Degrees.of(70))
+  .withHardLimit(IntakeArmConstants.hardLimitLower, IntakeArmConstants.hardLimitUpper)
   // Starting position is where your arm starts
-  .withStartingPosition(Degrees.of(-5))
+  .withStartingPosition(IntakeArmConstants.startingPositionAngle)
   // Length and mass of your arm for sim.
-  .withLength(Feet.of(3))
-  .withMass(Pounds.of(1))
+  .withLength(IntakeArmConstants.lengthArmFeet)
+  .withMass(IntakeArmConstants.massArmPounds)
   // Telemetry name and verbosity for the arm.
   .withTelemetry("Arm", TelemetryVerbosity.HIGH);
 

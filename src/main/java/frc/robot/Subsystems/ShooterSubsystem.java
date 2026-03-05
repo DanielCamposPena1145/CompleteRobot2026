@@ -35,7 +35,7 @@ import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Volts;
 
-import frc.robot.Constants.TurretSubsystemConstants;
+import frc.robot.Constants.ShooterSubsystemConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -55,25 +55,25 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     smcConfig = new SmartMotorControllerConfig(this)
   .withControlMode(ControlMode.CLOSED_LOOP)
-  .withClosedLoopController(TurretSubsystemConstants.kP, TurretSubsystemConstants.kI, TurretSubsystemConstants.kD, TurretSubsystemConstants.maxVelocityRPM, TurretSubsystemConstants.maxAccelerationRPM)
+  .withClosedLoopController(ShooterSubsystemConstants.kP, ShooterSubsystemConstants.kI, ShooterSubsystemConstants.kD, ShooterSubsystemConstants.maxVelocityRPM, ShooterSubsystemConstants.maxAccelerationRPM)
   // .withSimClosedLoopController(0.1, 0, 0, RPM.of(5000), RotationsPerSecondPerSecond.of(2500))
-  .withFeedforward(new SimpleMotorFeedforward(TurretSubsystemConstants.kS, TurretSubsystemConstants.kV, TurretSubsystemConstants.kA))
+  .withFeedforward(new SimpleMotorFeedforward(ShooterSubsystemConstants.kS, ShooterSubsystemConstants.kV, ShooterSubsystemConstants.kA))
   // .withSimFeedforward(new SimpleMotorFeedforward(0, 0, 0))
   .withTelemetry("ShooterMotor", TelemetryVerbosity.HIGH)
-  .withGearing(TurretSubsystemConstants.gearRatio)
+  .withGearing(ShooterSubsystemConstants.gearRatio)
   .withMotorInverted(false)
   .withIdleMode(MotorMode.COAST) 
-  .withStatorCurrentLimit(TurretSubsystemConstants.statorCurrentLimit);
+  .withStatorCurrentLimit(ShooterSubsystemConstants.statorCurrentLimit);
 
-  spark = new SparkFlex(TurretSubsystemConstants.canID, MotorType.kBrushless);
+  spark = new SparkFlex(ShooterSubsystemConstants.canID, MotorType.kBrushless);
 
-  sparkSmartMotorController = new SparkWrapper(spark, TurretSubsystemConstants.dcMotor, smcConfig);
+  sparkSmartMotorController = new SparkWrapper(spark, ShooterSubsystemConstants.dcMotor, smcConfig);
 
   // These values aren't necessarily important for us, later on they may be.
   shooterConfig = new FlyWheelConfig(sparkSmartMotorController)
-  .withDiameter(Inches.of(4)) // You can also change this to "Centimeters.of(2.54)" or whatever you'd like
-  .withMass(Pounds.of(1)) // Mass of flywheel, mainly for sim
-  .withSoftLimit(RPM.of(-1000), RPM.of(1000)) // rpm limits for mechanism
+  .withDiameter(ShooterSubsystemConstants.diameterWheel) // You can also change this to "Centimeters.of(2.54)" or whatever you'd like
+  .withMass(ShooterSubsystemConstants.massWheel) // Mass of flywheel, mainly for sim
+  .withSoftLimit(ShooterSubsystemConstants.softLimitLower, ShooterSubsystemConstants.softLimitUpper) // rpm limits for mechanism
   .withTelemetry("ShooterMech", TelemetryVerbosity.HIGH);
 
   shooter = new FlyWheel(shooterConfig);
