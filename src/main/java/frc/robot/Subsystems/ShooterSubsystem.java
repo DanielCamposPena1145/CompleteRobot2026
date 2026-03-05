@@ -102,4 +102,9 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     shooter.updateTelemetry();
   }
+
+  @Override
+  public void simulationPeriodic() {
+    shooter.simIterate();
+  }
 }
