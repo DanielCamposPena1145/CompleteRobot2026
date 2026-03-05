@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ShooterIntakeRollerConstants;
 import frc.robot.Subsystems.IntakeArmSubsystem;
 import frc.robot.Subsystems.IntakeRollerSubsystem;
+import frc.robot.Subsystems.ShooterRollerSubsystem;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -23,6 +25,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final IntakeArmSubsystem m_intakeArmSubsystem = new IntakeArmSubsystem();
   private final IntakeRollerSubsystem m_intakeRollerSubsystem = new IntakeRollerSubsystem();
+  private final ShooterRollerSubsystem m_shooterRollerSubsystem = new ShooterRollerSubsystem();
 
 
   // Operator Controllers
@@ -57,8 +60,9 @@ public class RobotContainer {
     m_OperatorController.button(4).whileTrue(m_intakeArmSubsystem.setAngle(Degrees.of(50)));    // BE CAREFUL WHEN TESTING THIS, USE LOW PID and FF values!!!!!
     // m_OperatorController.button(5).whileTrue(m_intakeArmSubsystem.set(0.3));
 
-    m_OperatorController.button(5).whileTrue(m_intakeRollerSubsystem.feed(0.4));
-    m_OperatorController.button(6).whileTrue(m_intakeRollerSubsystem.feed(-0.4));
+    // Intake Rollers with Shooter Rollers
+    m_OperatorController.button(5).whileTrue(m_intakeRollerSubsystem.feed(0.4).alongWith(m_shooterRollerSubsystem.feed(0.3)));
+    m_OperatorController.button(6).whileTrue(m_intakeRollerSubsystem.feed(-0.4).alongWith(m_shooterRollerSubsystem.feed(-0.3)));
 
 
 
