@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Subsystems.IntakeArmSubsystem;
+import frc.robot.Subsystems.IntakeRollerSubsystem;
 import frc.robot.Subsystems.ShooterSubsystem;
 
 import static edu.wpi.first.units.Units.Degrees;
@@ -21,6 +22,7 @@ public class RobotContainer {
   // Subsystems
   private final ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
   private final IntakeArmSubsystem m_intakeArmSubsystem = new IntakeArmSubsystem();
+  private final IntakeRollerSubsystem m_intakeRollerSubsystem = new IntakeRollerSubsystem();
 
 
   // Operator Controllers
@@ -36,6 +38,7 @@ public class RobotContainer {
     //Default Commands
     m_shooterSubsystem.setDefaultCommand(m_shooterSubsystem.set(0)); // If no other inputs are read, motors stop (or rather, motors use 0% of power)
     m_intakeArmSubsystem.setDefaultCommand(m_intakeArmSubsystem.setAngle(Degrees.of(0)));
+    m_intakeRollerSubsystem.setDefaultCommand(m_intakeRollerSubsystem.feed(0));
     configureBindings();
 
 
@@ -52,7 +55,10 @@ public class RobotContainer {
     // INTAKE ARM - Sets the intake arm at various angles
     m_OperatorController.button(3).whileTrue(m_intakeArmSubsystem.setAngle(Degrees.of(-15)));
     m_OperatorController.button(4).whileTrue(m_intakeArmSubsystem.setAngle(Degrees.of(50)));    // BE CAREFUL WHEN TESTING THIS, USE LOW PID and FF values!!!!!
-    m_OperatorController.button(5).whileTrue(m_intakeArmSubsystem.set(0.3));
+    // m_OperatorController.button(5).whileTrue(m_intakeArmSubsystem.set(0.3));
+
+    m_OperatorController.button(5).whileTrue(m_intakeRollerSubsystem.feed(0.4));
+    m_OperatorController.button(6).whileTrue(m_intakeRollerSubsystem.feed(-0.4));
 
 
 

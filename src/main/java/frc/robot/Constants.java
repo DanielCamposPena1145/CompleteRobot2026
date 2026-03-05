@@ -31,7 +31,7 @@ public final class Constants {
 
     public static class ShooterSubsystemConstants {
         // Keep in mind this is for the MAIN FLYWHEEL
-        public static final DCMotor dcMotor = DCMotor.getNeoVortex(1); // Don't worry about this
+        public static final DCMotor dcMotor = DCMotor.getNeoVortex(2);
         public static final int canIDMaster = 1;
         public static final int canIDFollower = 2;
         public static final double kP = 1; // The actual value for P may be lower than 1
@@ -47,15 +47,12 @@ public final class Constants {
         public static final Current statorCurrentLimit = Amps.of(40);
         public static final Distance diameterWheel = Inches.of(4); // You can also use Centimeters.of(2.5) or something like that
         public static final Mass massWheel = Pounds.of(1);
-        public static final AngularVelocity softLimitLower = RPM.of(-1000);
-        public static final AngularVelocity softLimitUpper = RPM.of(1000);
-
-
+        public static final AngularVelocity softLimitLower = RPM.of(0);
+        public static final AngularVelocity softLimitUpper = RPM.of(6000);
     }
 
-
     public static class IntakeArmConstants {
-        public static final DCMotor dcMotor = DCMotor.getNeoVortex(1);
+        public static final DCMotor dcMotor = DCMotor.getNeoVortex(2);
         public static final int canIDMaster = 3;
         public static final int canIDFollower = 4;
         public static final double kP = 1; 
@@ -78,7 +75,21 @@ public final class Constants {
         // Length and mass of arm
         public static final Distance lengthArmFeet = Feet.of(3);
         public static final Mass massArmPounds = Pounds.of(1);
+    }
 
-
+    public static class IntakeRollerConstants {
+        public static final DCMotor dcMotor = DCMotor.getNeoVortex(1);
+        public static final int canID = 5;
+        public static final double gearRatio = 12;
+        public static final boolean motorInverted = false;
+        // Limits
+        public static final Current statorCurrentLimit = Amps.of(40);
+        public static final AngularVelocity softLimitLower = RPM.of(-6000);
+        public static final AngularVelocity softLimitUpper = RPM.of(6000);
+        public static final Distance diameterWheel = Inches.of(4); // You can also use Centimeters.of(2.5) or something like that
+        public static final Mass massWheel = Pounds.of(1);
+        // Roller Speed
+        // public static final double feedCommandDutyCycle = 0.4;
+        // public static final double backfeedCommandDutyCycle = -0.4;
     }
 }

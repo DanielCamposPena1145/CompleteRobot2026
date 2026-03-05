@@ -1,0 +1,64 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.Subsystems;
+
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeRollerConstants;
+import yams.mechanisms.config.FlyWheelConfig;
+import yams.mechanisms.velocity.FlyWheel;
+import yams.motorcontrollers.SmartMotorController;
+import yams.motorcontrollers.SmartMotorControllerConfig;
+import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+import yams.motorcontrollers.local.SparkWrapper;
+
+public class IntakeRollerSubsystem extends SubsystemBase {
+
+  // THIS SUBSYSTEM REFERS TO THE MULTIPLE LONG WHITE ROLLERS
+  private SparkFlex motorMaster;
+
+  private SmartMotorControllerConfig smcConfig;
+  private SmartMotorController smc;
+  private final FlyWheelConfig rollerConfig;
+  private FlyWheel roller;
+
+  public IntakeRollerSubsystem() {
+    motorMaster = new SparkFlex(IntakeRollerConstants.canID, MotorType.kBrushless);
+
+    smcConfig = new SmartMotorControllerConfig(this)
+    .withControlMode(ControlMode.OPEN_LOOP)
+    .withTelemetry("IntakeRollerMotor", TelemetryVerbosity.HIGH)
+    .withGearing(IntakeRollerConstants.gearRatio)
+    .withMotorInverted(IntakeRollerConstants.motorInverted)
+    .withIdleMode(MotorMode.BRAKE)
+    .withStatorCurrentLimit(IntakeRollerConstants.statorCurrentLimit);
+
+    smc = new SparkWrapper(motorMaster, IntakeRollerConstants.dcMotor, smcConfig);
+
+    rollerConfig = new FlyWheelConfig(smc)
+    .withDiameter(IntakeRollerConstants.diameterWheel)
+    .withMass(IntakeRollerConstants.massWheel)
+    .withSoftLimit(IntakeRollerConstants.softLimitLower, IntakeRollerConstants.softLimitUpper)
+    .withTelemetry("IntakeRoller", TelemetryVerbosity.HIGH);
+
+    roller = new FlyWheel(rollerConfig);
+
+  }
+
+
+  public Command feed(double dutycycle) {
+    return roller.set(dutycycle);
+  }
+
+  @Override
+  public void periodic() {
+    roller.updateTelemetry();
+  }
+}

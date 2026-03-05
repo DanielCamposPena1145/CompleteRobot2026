@@ -102,6 +102,10 @@ public class ShooterSubsystem extends SubsystemBase {
     return shooter.set(dutyCycle);
   }
 
+  public Command stop() {
+    return shooter.set(0);
+  }
+
   @Override
   public void periodic() {
     shooter.updateTelemetry();
