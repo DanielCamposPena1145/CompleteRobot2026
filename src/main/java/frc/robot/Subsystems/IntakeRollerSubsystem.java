@@ -24,7 +24,7 @@ public class IntakeRollerSubsystem extends SubsystemBase {
 
   // THIS SUBSYSTEM REFERS TO THE MULTIPLE LONG WHITE ROLLERS
   private SparkFlex motorMaster;
-  private SparkFlex motorFollowerEndAffectorRoller;
+  private SparkFlex motorFollowerEndAffectorRoller; // This motor is the motor attached to the end affector of the IntakeArm.
 
   private SmartMotorControllerConfig smcConfig;
   private SmartMotorController smc;
@@ -57,7 +57,7 @@ public class IntakeRollerSubsystem extends SubsystemBase {
   }
 
 
-  public Command feed(double dutycycle) {
+  public Command set(double dutycycle) {
     return roller.set(dutycycle);
   }
 
