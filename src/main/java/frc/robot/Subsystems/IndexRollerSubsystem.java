@@ -1,0 +1,55 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems;
+
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.HopperRollerConstants;
+import yams.mechanisms.config.FlyWheelConfig;
+import yams.mechanisms.velocity.FlyWheel;
+import yams.motorcontrollers.SmartMotorController;
+import yams.motorcontrollers.SmartMotorControllerConfig;
+import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
+import yams.motorcontrollers.local.SparkWrapper;
+
+public class HopperRollerSubsystem extends SubsystemBase {
+  // This is the subsystem (roller) that makes the plate inside the hopper bounce up and down. Idk the actual name for it.
+  
+  private final SparkMax cimMotor;
+  private SmartMotorControllerConfig smcConfig;
+  private SmartMotorController smc;
+  private final FlyWheelConfig rollerConfig;
+  private FlyWheel roller;
+
+  public HopperRollerSubsystem() {
+    cimMotor = new SparkMax(HopperRollerConstants.canID, MotorType.kBrushed);
+
+    smcConfig = new SmartMotorControllerConfig(this)
+    .withControlMode(ControlMode.OPEN_LOOP)
+    .withTelemetry("HopperRollerMotor", TelemetryVerbosity.HIGH)
+    .withGearing(HopperRollerConstants.gearRatio)
+    .withMotorInverted(HopperRollerConstants.motorInverted)
+    .withStatorCurrentLimit(HopperRollerConstants.statorCurrentLimit);
+
+    smc = new SparkWrapper(cimMotor, HopperRollerConstants.dcMotor, smcConfig);
+
+    rollerConfig = new FlyWheelConfig(smc)
+    .withTelemetry("HopperRoller", TelemetryVerbosity.HIGH);
+
+    roller = new FlyWheel(rollerConfig);
+  }
+
+  public Command set(double dutycycle) {
+    return roller.set(dutycycle);
+  }
+
+  @Override
+  public void periodic() {
+  }
+}

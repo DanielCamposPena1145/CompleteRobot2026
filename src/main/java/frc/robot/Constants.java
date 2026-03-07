@@ -187,4 +187,24 @@ public final class Constants {
         public static final Distance diameterWheel = Inches.of(4);
         public static final Mass massWheel = Pounds.of(1);
     }
+
+    public static class ClimbSubsystemConstants {
+      public static final DCMotor dcMotor = DCMotor.getCIM(1);
+      public static final int canID = 8;
+
+        public static final double gearRatio = 100;
+        public static final boolean motorInverted = false;
+        // Limits
+        public static final Current statorCurrentLimit = Amps.of(40);
+}
+
+    public static class HopperRollerConstants {
+      public static final DCMotor dcMotor = DCMotor.getCIM(1);
+      public static final int canID = 9;
+      
+      public static final double gearRatio = 12;
+      public static final boolean motorInverted = false;
+      
+      public static final Current statorCurrentLimit = Amps.of(40);
+    }
 }
