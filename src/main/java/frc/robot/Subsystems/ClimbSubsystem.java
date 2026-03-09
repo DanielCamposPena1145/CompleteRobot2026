@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Seconds;
+
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
@@ -22,7 +24,7 @@ import yams.motorcontrollers.local.SparkWrapper;
 
 public class ClimbSubsystem extends SubsystemBase {
 
-  private SparkMax cimMotor;
+  private SparkFlex cimMotor;
   private SmartMotorControllerConfig smcConfig;
   private SmartMotorController sparkSmartMotorController;
   private ArmConfig armCfg;
@@ -30,7 +32,7 @@ public class ClimbSubsystem extends SubsystemBase {
   private Arm arm;
 
   public ClimbSubsystem() {
-    cimMotor = new SparkMax(ClimbSubsystemConstants.canID, MotorType.kBrushed);
+    cimMotor = new SparkFlex(ClimbSubsystemConstants.canID, MotorType.kBrushed);
 
 
     smcConfig = new SmartMotorControllerConfig(this)

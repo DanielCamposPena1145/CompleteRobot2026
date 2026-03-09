@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,27 +17,29 @@ import yams.mechanisms.velocity.FlyWheel;
 import yams.motorcontrollers.SmartMotorController;
 import yams.motorcontrollers.SmartMotorControllerConfig;
 import yams.motorcontrollers.SmartMotorControllerConfig.ControlMode;
+import yams.motorcontrollers.SmartMotorControllerConfig.MotorMode;
 import yams.motorcontrollers.SmartMotorControllerConfig.TelemetryVerbosity;
 import yams.motorcontrollers.local.SparkWrapper;
 
-public class HopperRollerSubsystem extends SubsystemBase {
+public class IndexRollerSubsystem extends SubsystemBase {
   // This is the subsystem (roller) that makes the plate inside the hopper bounce up and down. Idk the actual name for it.
   
-  private final SparkMax cimMotor;
+  private final SparkFlex cimMotor;
   private SmartMotorControllerConfig smcConfig;
   private SmartMotorController smc;
   private final FlyWheelConfig rollerConfig;
   private FlyWheel roller;
 
-  public HopperRollerSubsystem() {
-    cimMotor = new SparkMax(HopperRollerConstants.canID, MotorType.kBrushed);
+  public IndexRollerSubsystem() {
+    cimMotor = new SparkFlex(HopperRollerConstants.canID, MotorType.kBrushed);
 
     smcConfig = new SmartMotorControllerConfig(this)
     .withControlMode(ControlMode.OPEN_LOOP)
     .withTelemetry("HopperRollerMotor", TelemetryVerbosity.HIGH)
     .withGearing(HopperRollerConstants.gearRatio)
     .withMotorInverted(HopperRollerConstants.motorInverted)
-    .withStatorCurrentLimit(HopperRollerConstants.statorCurrentLimit);
+    .withStatorCurrentLimit(HopperRollerConstants.statorCurrentLimit)
+    .withIdleMode(MotorMode.COAST);
 
     smc = new SparkWrapper(cimMotor, HopperRollerConstants.dcMotor, smcConfig);
 
@@ -51,5 +55,6 @@ public class HopperRollerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    roller.updateTelemetry();
   }
 }
