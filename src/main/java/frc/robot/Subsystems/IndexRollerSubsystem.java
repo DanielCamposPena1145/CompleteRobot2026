@@ -11,7 +11,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.HopperRollerConstants;
+import frc.robot.Constants.IndexRollerConstants;
 import yams.mechanisms.config.FlyWheelConfig;
 import yams.mechanisms.velocity.FlyWheel;
 import yams.motorcontrollers.SmartMotorController;
@@ -31,17 +31,17 @@ public class IndexRollerSubsystem extends SubsystemBase {
   private FlyWheel roller;
 
   public IndexRollerSubsystem() {
-    cimMotor = new SparkFlex(HopperRollerConstants.canID, MotorType.kBrushed);
+    cimMotor = new SparkFlex(IndexRollerConstants.canID, MotorType.kBrushed);
 
     smcConfig = new SmartMotorControllerConfig(this)
     .withControlMode(ControlMode.OPEN_LOOP)
     .withTelemetry("HopperRollerMotor", TelemetryVerbosity.HIGH)
-    .withGearing(HopperRollerConstants.gearRatio)
-    .withMotorInverted(HopperRollerConstants.motorInverted)
-    .withStatorCurrentLimit(HopperRollerConstants.statorCurrentLimit)
+    .withGearing(IndexRollerConstants.gearRatio)
+    .withMotorInverted(IndexRollerConstants.motorInverted)
+    .withStatorCurrentLimit(IndexRollerConstants.statorCurrentLimit)
     .withIdleMode(MotorMode.COAST);
 
-    smc = new SparkWrapper(cimMotor, HopperRollerConstants.dcMotor, smcConfig);
+    smc = new SparkWrapper(cimMotor, IndexRollerConstants.dcMotor, smcConfig);
 
     rollerConfig = new FlyWheelConfig(smc)
     .withTelemetry("HopperRoller", TelemetryVerbosity.HIGH);

@@ -198,7 +198,7 @@ public final class Constants {
         public static final Current statorCurrentLimit = Amps.of(50);
 }
 
-    public static class HopperRollerConstants {
+    public static class IndexRollerConstants {
       public static final DCMotor dcMotor = DCMotor.getCIM(1);
       public static final int canID = 13;
       
