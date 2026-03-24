@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
     var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
 
     // Limelight
-    /* IF (limelight measurement is valid (can see apriltag & and can solve) AND the robot is not rotating incredibly fast) THEN
+    /* IF (limelight measurement is valid (can see apriltag & and can perform calculations) AND the robot is not rotating incredibly fast) THEN
               reset odemetry with limelight measurements
     */
     if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {

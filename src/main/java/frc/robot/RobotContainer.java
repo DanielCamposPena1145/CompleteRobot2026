@@ -64,9 +64,9 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getRawAxis(1), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRawAxis(0), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRawAxis(2), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
 
@@ -147,24 +147,26 @@ public class RobotContainer {
 
     // ----------------------------------------------------------------------
 
+    /*
+     * Aiming and Ranging Simultaneously
+     * Keep in mind this command will only work if the apriltag is in view.
+     */
+    // Limelight button - While Button Pressed -> Call drive command so that x and y are user controlled but rotation is computed
+    m_driverController.L1().whileTrue(
+      new RunCommand(
+        ()-> m_robotDrive.drive(
+          // If you want the robot to move to a certain distance between the apriltag and itself replace "-m_driverController.getLeftY()" with "LimelightHelpers.getTY("limelight") * -.01"
+          -m_driverController.getLeftY(),
+          -m_driverController.getLeftX(),
+          LimelightHelpers.getTX("limelight") * -0.05,
+          true
+        ),
+        m_robotDrive
+      ));
+      /* While L1 is pressed, and while the limelight detects an apriltag, the robot (limelight) will rotate itself such that it aligns with the apriltag.
+       * If you see that the robot is overshooting it's alignment with the apriltag via rotation, lower or raise "-0.05" in increments of 0.01
+      */
 
-    // INTAKE ARM - Sets the intake arm at various angles
-    // m_OperatorController.button(3).whileTrue(m_intakeArmSubsystem.setAngle(Degrees.of(-15)));
-    // m_OperatorController.button(4).whileTrue(m_intakeArmSubsystem.setAngle(Degrees.of(50)));    // BE CAREFUL WHEN TESTING THIS, USE LOW PID and FF values!!!!!
-    // m_OperatorController.button(5).whileTrue(m_intakeArmSubsystem.set(0.3));
-
-    // Intake balls
-    // m_OperatorController.button(5).whileTrue(m_intakeRollerSubsystem.set(0.4));
-    // m_OperatorController.button(6).whileTrue(m_intakeRollerSubsystem.set(-0.4));
-
-    // // // Spin Intake Rollers (not intake) and shoot
-    // m_OperatorController.button(7)
-    //   .whileTrue(m_intakeRollerSubsystem.set(0.4)
-    //                                     .alongWith(m_shooterSubsystem.setVelocity(RPM.of(300))));
-
-    // Climber - Climb Up/ Climb Down -> Driver Controller
-    // m_driverController.button(1).whileTrue(m_climbSubsystem.set(0.8));
-    // m_driverController.button(2).whileTrue(m_climbSubsystem.set(-0.8));
 
   }
 
