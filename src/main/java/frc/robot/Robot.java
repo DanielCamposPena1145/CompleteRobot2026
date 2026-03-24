@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,6 +21,20 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    // LimeLight - Grabbing rotational speed of the robot
+    double omegaRps = Units.degreesToRotations(m_robotContainer.getRobotDrive().getTurnRate());
+    // Limelight - Grabs the current limelight measurements
+    var llMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+
+    // Limelight
+    /* IF (limelight measurement is valid (can see apriltag & and can solve) AND the robot is not rotating incredibly fast) THEN
+              reset odemetry with limelight measurements
+    */
+    if (llMeasurement != null && llMeasurement.tagCount > 0 && Math.abs(omegaRps) < 2.0) {
+      m_robotContainer.getRobotDrive().resetOdometry(llMeasurement.pose);
+    }
+
   }
 
   @Override

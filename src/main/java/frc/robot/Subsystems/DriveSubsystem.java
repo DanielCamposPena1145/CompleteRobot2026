@@ -28,6 +28,8 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -54,6 +56,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(NavXComType.kMXP_SPI);
+
+  // Adding field map
+  private final Field2d field2d = new Field2d();
 
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
@@ -104,6 +109,11 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
         });
+
+        // updating odmetry of robot in field
+        field2d.setRobotPose(m_odometry.getPoseMeters());
+        // pushing updated odemetry in field to smartdashboard
+        SmartDashboard.putData(field2d);
   }
 
   /**

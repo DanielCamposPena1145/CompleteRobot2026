@@ -41,6 +41,11 @@ public class RobotContainer {
 
   private final SendableChooser<Command> autoChooser;
 
+  // Getter Method for robotdrive
+  public DriveSubsystem getRobotDrive() {
+      return m_robotDrive;
+    }
+
   //Dont use
   // private final IntakeArmSubsystem m_intakeArmSubsystem = new IntakeArmSubsystem();
   // private final IntakeRollerSubsystem m_intakeRollerSubsystem = new IntakeRollerSubsystem();
@@ -53,7 +58,6 @@ public class RobotContainer {
 
 
   public RobotContainer() {
-
     // Swerve
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
